@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 
 function TourismMap() {
   const [places, setPlaces] = useState<any[]>([]);
@@ -8,17 +9,21 @@ function TourismMap() {
   const [view, setView] = useState<"map" | "cards">("map");
 
   useEffect(() => {
-    fetch("https://xadiufoakfmdygtjdihw.supabase.co/rest/v1/places", {
-      headers: {
-        apikey:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhZGl1Zm9ha2ZtZHlndGpkaWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5Njk4MDUsImV4cCI6MjA2NzU0NTgwNX0.jXBVkn3gTb5oe_0hgmvDWMIz0ll_sptK1f01MwUNgiA",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhZGl1Zm9ha2ZtZHlndGpkaWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5Njk4MDUsImV4cCI6MjA2NzU0NTgwNX0.jXBVkn3gTb5oe_0hgmvDWMIz0ll_sptK1f01MwUNgiA",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setPlaces(data))
-      .catch((err) => console.error(err));
+    axios
+      .get("https://xadiufoakfmdygtjdihw.supabase.co/rest/v1/places", {
+        headers: {
+          apikey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhZGl1Zm9ha2ZtZHlndGpkaWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5Njk4MDUsImV4cCI6MjA2NzU0NTgwNX0.jXBVkn3gTb5oe_0hgmvDWMIz0ll_sptK1f01MwUNgiA",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhZGl1Zm9ha2ZtZHlndGpkaWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5Njk4MDUsImV4cCI6MjA2NzU0NTgwNX0.jXBVkn3gTb5oe_0hgmvDWMIz0ll_sptK1f01MwUNgiA",
+        },
+      })
+      .then((res) => {
+        setPlaces(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   const filteredPlaces = selectedCategory
