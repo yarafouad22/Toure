@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
+import L from "leaflet";
 
 function TourismMap() {
   const [places, setPlaces] = useState<any[]>([]);
@@ -31,7 +32,10 @@ function TourismMap() {
     : places;
 
   const categories = Array.from(new Set(places.map((p) => p.category)));
-
+  const custumIcon = L.icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/1483/1483336.png",
+    iconSize: [38, 38],
+  });
   return (
     <div style={{ padding: "20px" }}>
       {/* Toggle View Button */}
@@ -106,7 +110,11 @@ function TourismMap() {
             />
 
             {filteredPlaces.map((place) => (
-              <Marker key={place.id} position={[place.lat, place.lng]}>
+              <Marker
+                key={place.id}
+                position={[place.lat, place.lng]}
+                icon={custumIcon}
+              >
                 <Popup>
                   <h3>{place.name}</h3>
                   <img
